@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "manifesto",
+  "version": "1.0.0",
+  "description": "A basic example extension with only required keys",
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "action": {
+    "default_title": "HOJE É PIZZA QUE VONTADE DE COMER PIZZA",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "scripting",
+    "bookmarks",
+    "activeTab",
+    "webNavigation",
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "https://www.google.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "options_page": "options.html"
+}
