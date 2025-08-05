@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "manifesto",
+  "name": "DKG",
   "version": "1.0.0",
   "description": "A basic example extension with only required keys",
   "icons": {
@@ -9,7 +9,7 @@
     "128": "icon.png"
   },
   "action": {
-    "default_title": "HOJE É PIZZA QUE VONTADE DE COMER PIZZA",
+    "default_title": "DKG - UNIRIO ",
     "default_popup": "popup.html"
   },
   "content_scripts": [

@@ -11,7 +11,7 @@ chrome.storage.local.get("escutando", (r) => {
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === "local" && changes.escutando) {
     escutaEstaAtiva = changes.escutando.newValue === true;
-    console.log(`Estado de escuta: ${escutaEstaAtiva ? 'ativa' : 'inativa'}`);
+
     if (escutaEstaAtiva) {
       capturarCliques()
     }else{
@@ -57,7 +57,6 @@ function processarClique(event: MouseEvent, igualdade: boolean, valorAtual: stri
     console.log('❌ Clique fora dos top 10 resultados orgânicos ou em seção desconsiderada.');
     return;
   }
-
   chrome.storage.local.get("dkg", (result) => {
     const dados: DadosClique = result.dkg || {};
     if (!dados[valorAtual]) dados[valorAtual] = [];
@@ -70,7 +69,7 @@ function processarClique(event: MouseEvent, igualdade: boolean, valorAtual: stri
         horario: Date.now()
       });
     chrome.storage.local.set({ dkg: dados }, () => {
-      console.log(`📦 Dados salvos:`, dados);
+
       // Espera ~100ms antes de redirecionar, garantindo que o storage foi escrito
       setTimeout(() => {
         window.location.href = linkClicado.href;
@@ -81,3 +80,5 @@ function processarClique(event: MouseEvent, igualdade: boolean, valorAtual: stri
 
   window.location.href = linkClicado.href;
 }
+
+

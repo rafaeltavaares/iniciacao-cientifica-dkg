@@ -21,11 +21,15 @@
   },
   "devDependencies": {
     "@types/chrome": "^0.0.317",
+    "@types/jest": "^30.0.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "copy-webpack-plugin": "^13.0.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.6.3",
+    "jest": "^30.0.2",
+    "jest-webextension-mock": "^4.0.0",
+    "ts-jest": "^29.4.0",
     "webpack": "^5.99.7",
     "webpack-cli": "^6.0.1"
   }

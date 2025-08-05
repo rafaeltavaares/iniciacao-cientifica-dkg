@@ -9077,6 +9077,13 @@ var __webpack_exports__ = {};
   !*** ./src/background/background.ts ***!
   \**************************************/
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Jaccard: () => (/* binding */ Jaccard),
+/* harmony export */   calcularCoeficientesObservacao: () => (/* binding */ calcularCoeficientesObservacao),
+/* harmony export */   obterOuCriarSessao: () => (/* binding */ obterOuCriarSessao),
+/* harmony export */   salvarCliques: () => (/* binding */ salvarCliques),
+/* harmony export */   salvarMetricas: () => (/* binding */ salvarMetricas)
+/* harmony export */ });
 /* harmony import */ var _supabase_supabase_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @supabase/supabase-js */ "./node_modules/@supabase/supabase-js/dist/module/index.js");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -9090,11 +9097,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 const supabaseUrl = 'https://ufgliytwkflmbyykbpvy.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmZ2xpeXR3a2ZsbWJ5eWticHZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0ODgyODUsImV4cCI6MjA2MzA2NDI4NX0.5yM9FnpQMmE8JSHVFyYxyoq94u3pOeceVrifUf_6W44'; // truncado por segurança
-// const supabase = createClient(supabaseUrl, supabaseAnonKey);
 const supabase = (0,_supabase_supabase_js__WEBPACK_IMPORTED_MODULE_0__.createClient)(supabaseUrl, supabaseAnonKey);
-let entropiaRelativa = 0.01;
-let resultado = 0;
-let contarPesquisa = 1;
 const distancia = [
     [1, 0.98, 1, 1, 1, 1, 1, 1, 1, 1],
     [0.01, 1, 0.62, 0.77, 0.92, 0.96, 0.99, 1, 1, 1],
@@ -9107,168 +9110,221 @@ const distancia = [
     [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 1, 0.41],
     [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 1]
 ];
-chrome.storage.onChanged.addListener((changes, area) => {
+let entropiaRelativa = 0.01;
+let resultado = 0;
+let contarPesquisa = 1;
+chrome.storage.onChanged.addListener((changes) => __awaiter(void 0, void 0, void 0, function* () {
     for (const chave in changes) {
         const { oldValue, newValue } = changes[chave];
         if (oldValue && newValue) {
-            compararObjetos({ oldValue, newValue });
+            yield processarComparacao({ oldValue, newValue });
         }
     }
-});
-function compararObjetos(obj) {
+}));
+function processarComparacao(obj) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a, _b;
-        // Tenta restaurar sessão salva do storage
-        chrome.storage.local.get(['access_token', 'refresh_token'], (_a) => __awaiter(this, [_a], void 0, function* ({ access_token, refresh_token }) {
-            if (access_token && refresh_token) {
-                console.log("estou aqui");
-                const { error } = yield supabase.auth.setSession({ access_token, refresh_token });
-                if (error)
-                    console.error('Erro ao restaurar sessão:', error.message);
-                else
-                    console.log('Sessão restaurada com sucesso');
-            }
-        }));
-        const chavesNovo = Object.keys(obj.newValue);
-        const chavesAntigo = Object.keys(obj.oldValue);
-        let queryNova = null;
-        let ultimaQuery = null;
-        let tempoMaisRecente = Infinity;
-        const horarioAtual = Date.now();
-        for (const chave of chavesNovo) {
-            if (!chavesAntigo.includes(chave)) {
-                queryNova = chave;
-                break;
-            }
+        yield restaurarSessao();
+        const { queryNova, ultimaQuery, chavesOrdenadas } = extrairQueries(obj);
+        if (!chavesOrdenadas.length)
+            return;
+        const dkg = yield obterDKG();
+        if (!dkg)
+            return;
+        const sessaoId = yield obterOuCriarSessao(ultimaQuery || queryNova);
+        if (!sessaoId)
+            return;
+        if (chavesOrdenadas.length === 1) {
+            yield processarUnicaQuery(dkg, chavesOrdenadas[0], sessaoId);
         }
-        for (const chave of chavesAntigo) {
-            const horario = parseInt(((_b = (_a = obj.newValue[chave]) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.horario) || '');
-            if (!isNaN(horario)) {
-                const diff = horarioAtual - horario;
-                if (diff < tempoMaisRecente) {
-                    tempoMaisRecente = diff;
-                    ultimaQuery = chave;
-                }
-            }
+        else {
+            yield processarMultiplasQueries(dkg, queryNova, ultimaQuery, chavesOrdenadas, sessaoId);
         }
-        chavesNovo.sort((a, b) => {
-            var _a, _b, _c, _d;
-            const h1 = parseInt(((_b = (_a = obj.newValue[a]) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.horario) || '0');
-            const h2 = parseInt(((_d = (_c = obj.newValue[b]) === null || _c === void 0 ? void 0 : _c[0]) === null || _d === void 0 ? void 0 : _d.horario) || '0');
-            return h2 - h1;
-        });
-        chrome.storage.local.get('dkg', (result) => __awaiter(this, void 0, void 0, function* () {
-            var _a;
-            const dkg = result.dkg;
-            console.log("================");
-            let a = dkg[ultimaQuery].length;
-            let b = dkg[queryNova].length;
-            console.log("tamanho chaves novo > ", chavesNovo.length);
-            if (!dkg || !chavesNovo[0])
-                return;
-            const tam = dkg[chavesNovo[0]].length;
-            if (contarPesquisa > 1) {
-                if (chavesNovo.length === 1 && a >= 2) {
-                    const r2 = dkg[chavesNovo[0]][tam - 1].rank;
-                    const r1 = dkg[chavesNovo[0]][tam - 2].rank;
-                    const link2 = dkg[chavesNovo[0]][tam - 1].link;
-                    const link1 = dkg[chavesNovo[0]][tam - 2].link;
-                    const dist = Math.abs(r2 - r1);
-                    const pi = distancia[dist][r2];
-                    const coefObs = calcularCoeficientesObservacao(chavesNovo);
-                    entropiaRelativa += pi * (Math.log10(coefObs) / pi);
-                    resultado = (1 - entropiaRelativa) * 0.01;
-                }
-                if (chavesNovo.length > 1) {
-                    const r2 = dkg[ultimaQuery][a - 1].rank;
-                    const r1 = dkg[queryNova][b - 1].rank;
-                    const link2 = dkg[ultimaQuery][a - 1].link;
-                    const link1 = dkg[queryNova][b - 1].link;
-                    const dist = Math.abs(r2 - r1);
-                    const pi = distancia[dist][r2];
-                    const coefObs = calcularCoeficientesObservacao(chavesNovo);
-                    entropiaRelativa += pi * (Math.log10(coefObs) / pi);
-                    resultado = (1 - entropiaRelativa) * 0.01;
-                    console.log("ultima query > ", ultimaQuery);
-                    console.log("query nova > ", queryNova);
-                    console.log("array ultima query >", dkg[ultimaQuery]);
-                    console.log("array query nova >", dkg[queryNova]);
-                }
-                // Obter sessão do usuário
-                const { data: sessionData, error: sessionError } = yield supabase.auth.getSession();
-                if (sessionError || !((_a = sessionData.session) === null || _a === void 0 ? void 0 : _a.user)) {
-                    console.error("Usuário não autenticado.");
-                    return;
-                }
-                const usuario_id = sessionData.session.user.id;
-                // Verificar se já existe sessão
-                const { data: sessaoExistente, error: erroBuscaSessao } = yield supabase
-                    .from('sessoes')
-                    .select('id')
-                    .eq('usuario_id', usuario_id)
-                    .eq('busca', ultimaQuery)
-                    .order('criado_em', { ascending: false })
-                    .limit(1)
-                    .single();
-                let sessao_id;
-                if (erroBuscaSessao || !sessaoExistente) {
-                    console.log("query nova> ", queryNova);
-                    console.log("ultima query > ", ultimaQuery);
-                    if (!ultimaQuery) {
-                        console.warn("ultimaQuery indefinida, abortando inserção");
-                        return;
-                    }
-                    const { data: sessaoCriada, error: erroSessao } = yield supabase
-                        .from('sessoes')
-                        .insert([
-                        {
-                            usuario_id,
-                            busca: ultimaQuery,
-                            criado_em: new Date().toISOString()
-                        }
-                    ])
-                        .select()
-                        .single();
-                    if (erroSessao || !sessaoCriada) {
-                        console.error("Erro ao criar sessão:", erroSessao === null || erroSessao === void 0 ? void 0 : erroSessao.message);
-                        return;
-                    }
-                    sessao_id = sessaoCriada.id;
-                }
-                else {
-                    sessao_id = sessaoExistente.id;
-                }
-                // // Inserir cliques
-                // await supabase.from('cliques').insert([
-                //   { sessao_id, link: link1, rank_organico: r1 },
-                //   { sessao_id, link: link2, rank_organico: r2 }
-                // ]);
-                // // Inserir métricas
-                // const { error: erroMetrica } = await supabase.from('metricas_dkg').insert([
-                //   {
-                //     sessao_id,
-                //     jaccard: Jaccard(chavesNovo[0], chavesNovo[1]),
-                //     observacao: coefObs,
-                //     entropia: entropiaRelativa,
-                //     dkg: resultado
-                //   }
-                // ]);
-                // if (erroMetrica) {
-                //   console.error("Erro ao salvar métricas:", erroMetrica.message);
-                // } else {
-                //   console.log("Métricas salvas com sucesso!");
-                // }
-            }
-        }));
         contarPesquisa++;
     });
 }
+// ===============================
+// === Processamento Principal ===
+// ===============================
+function processarUnicaQuery(dkg, query, sessaoId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b;
+        const clicks = dkg[query];
+        if (!clicks || clicks.length < 2) {
+            console.warn("Clique insuficiente para processar.");
+            return;
+        }
+        for (let i = 1; i < clicks.length; i++) {
+            const anterior = clicks[i - 1];
+            const atual = clicks[i];
+            const r1 = anterior.rank;
+            const r2 = atual.rank;
+            const link1 = anterior.link;
+            const link2 = atual.link;
+            const dist = Math.abs(r2 - r1);
+            const pi = (_b = (_a = distancia[dist]) === null || _a === void 0 ? void 0 : _a[r2]) !== null && _b !== void 0 ? _b : 0.01;
+            const coefObs = 1; // Para uma única query, pode ser constante ou personalizado
+            entropiaRelativa += pi * (Math.log10(coefObs) / pi);
+            resultado = (1 - entropiaRelativa) * 0.01;
+            yield salvarCliques(sessaoId, link1, r1, link2, r2);
+            yield salvarMetricas(sessaoId, [query, query], coefObs);
+        }
+        console.log("Múltiplos cliques dentro da mesma busca processados.");
+    });
+}
+function processarMultiplasQueries(dkg, queryNova, ultimaQuery, chaves, sessaoId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b;
+        const { r1, r2, link1, link2 } = obterRanksELinks(dkg, queryNova, ultimaQuery, chaves);
+        if (r1 === undefined || r2 === undefined)
+            return;
+        const dist = Math.abs(r2 - r1);
+        const pi = (_b = (_a = distancia[dist]) === null || _a === void 0 ? void 0 : _a[r2]) !== null && _b !== void 0 ? _b : 0.01;
+        const coefObs = calcularCoeficientesObservacao(chaves);
+        entropiaRelativa += pi * (Math.log10(coefObs) / pi);
+        resultado = (1 - entropiaRelativa) * 0.01;
+        yield salvarCliques(sessaoId, link1, r1, link2, r2);
+        yield salvarMetricas(sessaoId, chaves, coefObs);
+        console.log("Processamento de múltiplas buscas concluído.");
+    });
+}
+// ===============================
+// === Funções Auxiliares       ===
+// ===============================
+function restaurarSessao() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve) => {
+            chrome.storage.local.get(['access_token', 'refresh_token'], (_a) => __awaiter(this, [_a], void 0, function* ({ access_token, refresh_token }) {
+                if (access_token && refresh_token) {
+                    const { error } = yield supabase.auth.setSession({ access_token, refresh_token });
+                    if (error)
+                        console.error('Erro ao restaurar sessão:', error.message);
+                }
+                resolve();
+            }));
+        });
+    });
+}
+function extrairQueries(obj) {
+    var _a, _b, _c;
+    const chavesNovo = Object.keys(obj.newValue);
+    const chavesAntigo = Object.keys(obj.oldValue);
+    const horarioAtual = Date.now();
+    let queryNova = null;
+    let ultimaQuery = null;
+    let tempoMaisRecente = Infinity;
+    for (const chave of chavesNovo) {
+        if (!chavesAntigo.includes(chave)) {
+            queryNova = chave;
+            break;
+        }
+    }
+    for (const chave of chavesAntigo) {
+        const horario = parseInt((_c = (_b = (_a = obj.newValue[chave]) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.horario) !== null && _c !== void 0 ? _c : '');
+        if (!isNaN(horario)) {
+            const diff = horarioAtual - horario;
+            if (diff < tempoMaisRecente) {
+                tempoMaisRecente = diff;
+                ultimaQuery = chave;
+            }
+        }
+    }
+    const chavesOrdenadas = [...chavesNovo].sort((a, b) => {
+        var _a, _b, _c, _d, _e, _f;
+        const h1 = parseInt((_c = (_b = (_a = obj.newValue[a]) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.horario) !== null && _c !== void 0 ? _c : '0');
+        const h2 = parseInt((_f = (_e = (_d = obj.newValue[b]) === null || _d === void 0 ? void 0 : _d[0]) === null || _e === void 0 ? void 0 : _e.horario) !== null && _f !== void 0 ? _f : '0');
+        return h2 - h1;
+    });
+    return { queryNova, ultimaQuery, chavesOrdenadas };
+}
+function obterDKG() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve) => {
+            chrome.storage.local.get('dkg', ({ dkg }) => {
+                if (!dkg) {
+                    console.error('DKG não encontrado.');
+                    resolve(null);
+                }
+                else {
+                    resolve(dkg);
+                }
+            });
+        });
+    });
+}
+function obterRanksELinks(dkg, queryNova, ultimaQuery, chaves) {
+    var _a, _b, _c, _d, _e, _f;
+    const nova = dkg[queryNova];
+    const antiga = dkg[ultimaQuery];
+    if (!nova || !antiga)
+        return {};
+    const r1 = chaves.length > 1 ? (_a = nova[nova.length - 1]) === null || _a === void 0 ? void 0 : _a.rank : (_b = antiga[antiga.length - 2]) === null || _b === void 0 ? void 0 : _b.rank;
+    const r2 = (_c = antiga[antiga.length - 1]) === null || _c === void 0 ? void 0 : _c.rank;
+    const link1 = chaves.length > 1 ? (_d = nova[nova.length - 1]) === null || _d === void 0 ? void 0 : _d.link : (_e = antiga[antiga.length - 2]) === null || _e === void 0 ? void 0 : _e.link;
+    const link2 = (_f = antiga[antiga.length - 1]) === null || _f === void 0 ? void 0 : _f.link;
+    return { r1, r2, link1, link2 };
+}
+function obterOuCriarSessao(query) {
+    return __awaiter(this, void 0, void 0, function* () {
+        var _a;
+        const { data: sessionData, error: sessionError } = yield supabase.auth.getSession();
+        if (sessionError || !((_a = sessionData.session) === null || _a === void 0 ? void 0 : _a.user)) {
+            console.error('Usuário não autenticado.');
+            return null;
+        }
+        const usuarioId = sessionData.session.user.id;
+        const { data: sessaoExistente } = yield supabase
+            .from('sessoes')
+            .select('id')
+            .eq('usuario_id', usuarioId)
+            .eq('busca', query)
+            .order('criado_em', { ascending: false })
+            .limit(1)
+            .single();
+        if (sessaoExistente) {
+            return sessaoExistente.id;
+        }
+        const { data: sessaoCriada, error } = yield supabase
+            .from('sessoes')
+            .insert({ usuario_id: usuarioId, busca: query, criado_em: new Date().toISOString() })
+            .select()
+            .single();
+        if (error || !sessaoCriada) {
+            console.error('Erro ao criar sessão:', error === null || error === void 0 ? void 0 : error.message);
+            return null;
+        }
+        return sessaoCriada.id;
+    });
+}
+function salvarCliques(sessaoId, link1, r1, link2, r2) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield supabase.from('cliques').insert([
+            { sessao_id: sessaoId, link: link1, rank_organico: r1 },
+            { sessao_id: sessaoId, link: link2, rank_organico: r2 }
+        ]);
+    });
+}
+function salvarMetricas(sessaoId, chaves, coefObs) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { error } = yield supabase.from('metricas_dkg').insert({
+            sessao_id: sessaoId,
+            jaccard: Jaccard(chaves[0], chaves[1]),
+            observacao: coefObs,
+            entropia: entropiaRelativa,
+            dkg: resultado
+        });
+        if (error)
+            console.error('Erro ao salvar métricas:', error.message);
+    });
+}
+// ===============================
+// === Métricas                  ===
+// ===============================
 function Jaccard(q1, q2) {
     if (!q1 || !q2)
         return 0;
     const a = new Set(q1.toLowerCase().split(/\s+/));
     const b = new Set(q2.toLowerCase().split(/\s+/));
-    const inter = [...a].filter(p => b.has(p));
+    const inter = [...a].filter((p) => b.has(p));
     const uniao = new Set([...a, ...b]);
     return inter.length / uniao.size;
 }

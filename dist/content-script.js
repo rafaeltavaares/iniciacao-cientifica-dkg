@@ -13,7 +13,6 @@ chrome.storage.local.get("escutando", (r) => {
 chrome.storage.onChanged.addListener((changes, area) => {
     if (area === "local" && changes.escutando) {
         escutaEstaAtiva = changes.escutando.newValue === true;
-        console.log(`Estado de escuta: ${escutaEstaAtiva ? 'ativa' : 'inativa'}`);
         if (escutaEstaAtiva) {
             capturarCliques();
         }
@@ -64,7 +63,6 @@ function processarClique(event, igualdade, valorAtual) {
                 horario: Date.now()
             });
             chrome.storage.local.set({ dkg: dados }, () => {
-                console.log(`📦 Dados salvos:`, dados);
                 // Espera ~100ms antes de redirecionar, garantindo que o storage foi escrito
                 setTimeout(() => {
                     window.location.href = linkClicado.href;
