@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/login.css">
+    <title>Google Login Form</title>
+</head>
+<body>
+    <div class="box">
+        <div id="logo" class="google-logo" title="Google">
+            <img src="./assets/images/UNIRIO1.png" width="170" height="100" alt="Logo da UNIRIO">
+        </div>
+        <h2>Sign in</h2>
+        <form method="post" action="/login">
+            <div class="inputBox">
+                <input type="email" name="email" required onkeyup="this.setAttribute('value', this.value);" value="">
+                <label>E-mail</label>
+                <% if (erros) { %>
+                    <div class="error"><%if(erros.erro_validar_email){%>E-mail inválido<%}%></div>
+                <% } %>
+            </div>
+            
+            <div class="inputBox">
+                <input type="password" name="senha" required onkeyup="this.setAttribute('value', this.value);" value="">
+                <label>Senha</label>
+                <% if(erros){ %>
+                  <div class="error"><%if(erros.erro_credencial_invalida){%>Credenciais inválidas<% } %></div>
+                <% } %>
+            </div>
+
+            <div class="sign-up">
+              <a href="/register">Sign-up</a>
+              
+              <input type="submit" name="sign-in" value="Entrar">
+              <br>
+              <br>
+            <div class="forgot">
+              <button type="button" id="esqueceu">Esqueceu seu e-mail?</button>
+          </div>
+          </div>
+           
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("esqueceu").addEventListener("click", () => {
+            alert("Entre em contato com a universidade.");
+        });
+    </script>
+</body>
+</html>

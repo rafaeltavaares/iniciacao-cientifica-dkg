@@ -1,0 +1,287 @@
+body{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background: #091442;
+    overflow-x: hidden;
+}
+
+.blankspace{
+
+    height: 200px;
+    width: 100%;
+}
+
+
+
+.busca_sec{
+    display: flex;
+
+
+
+    justify-content: left;
+    width: 100%;
+    height: 95vh;
+    background-color: #ffffff;
+    /* border: 1px solid purple; */
+
+ 
+}
+.conteudo_busca{
+    color: #060126;
+    /* border: 1px solid purple;    */
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+
+}
+.busca_sec img{
+    width: 370px;
+    height: 340px;
+}
+.texto_busca{
+    color: #000000bc;
+    letter-spacing: 1.2px;
+    flex-direction: column;
+    text-align: justify;
+    width: 50%;
+    /* border: 1px solid pink; */
+    display: flex;
+}
+
+.sobre{
+    width: 100%;
+    
+    justify-content: center;
+    height: 60vh;
+    background-color: #060126;
+    display: flex;
+}
+
+.sobre .conteudo{
+    padding: 10px;
+    width: 70%;
+
+    display: flex;
+}
+
+.sobre .conteudo .texto{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    color: rgba(230, 228, 228, 0.658);
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: justify;
+    letter-spacing: 1.5px;
+
+}
+.titlo{
+    display: flex;
+    flex-direction: row;
+}
+.texto h1{
+    color:white
+}
+.titlo span{
+    color:aqua;
+    font-weight: 200;
+}
+
+
+.privacidade{
+    display: flex;
+    justify-content: right;
+
+    width: 100%;
+    height: 80vh;
+
+}
+
+.conteudo_privacidade{
+    letter-spacing: 1.2px;
+    justify-content: center;
+    text-align: justify;
+
+    color: rgba(255, 255, 255, 0.785);
+    width: 60%;
+
+}
+.conteudo_privacidade .texto{
+    width: 50%;
+
+}
+
+
+
+
+
+
+
+
+
+.content{
+    
+    width: 100%;
+    height: 270vh;
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid rgb(105, 103, 103);  */
+    position: absolute;
+    background-color: transparent;
+    color: aliceblue;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.nav{
+    width: 100%;
+    height: 75px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+
+.nav .direita{
+    width:30%;
+    height: 100%;
+    padding-right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* border: 1px solid green; */
+
+}
+.direita button{
+    height: 20%;
+    margin: 1%;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    text-decoration: none;
+
+    border-radius: 7px;
+    color: white;
+}
+.esquerda{
+    display: flex;
+
+    /* border: 1px solid green; */
+    width: 19%;
+    height: 100%;
+}
+.esquerda img{
+    width: 100px;
+    height:100%;
+}
+a button{
+    height: 15px;
+    width: 70px;
+}
+.login{
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:rgba(5, 87, 210, 0.699);
+}
+.login:hover{
+
+    box-shadow: 2px 1px 84px 2px rgba(90,137,237,1);
+    transform: scale(1.1,1.1);
+}
+.registrar{
+    background-color: transparent;
+    border: 1px solid rgb(36, 87, 150);
+    height: 100%;
+
+}
+.registrar:hover{
+    box-shadow: 2px 1px 84px 2px rgba(90,137,237,1);
+    transform: scale(1.1,1.1);
+}
+.nav p{
+
+    color: aliceblue;
+    padding: 1cap;
+}
+.hero{
+    display: flex;
+    color: white;
+    width: 100%;
+    height: 20%;
+    /* border: 1px solid pink; */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.hero-content{
+    display: flex;
+    flex-direction: column;
+   
+}
+.desaparecer{
+    animation: desaparece 1s ease-out forwards;
+}
+@keyframes desaparece{
+    0% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        visibility: hidden; /* Torna o elemento invisível e não interativo */
+      }
+}
+
+.hero-btn{
+    border: none;
+    
+    width: 30%;
+    padding: 10px;
+    margin-top: 8px;
+    border-radius: 10px;
+    color: aliceblue;
+    background-color: rgba(24, 120, 188, 0.715);
+    box-shadow: 2px 1px 100px rgba(90,137,237,0.4);
+}
+.hero-btn:hover{
+    transform: scale(1.1);
+}
+.texto_high{
+    color: white;
+    text-decoration: none;
+}
+.texto_high:hover{
+    text-decoration: underline;
+
+}
+
+.link{
+    color: rgba(0, 255, 255, 0.625);
+}
+.title2{
+    color: rgba(230, 228, 228, 0.641);
+}
+.title2 a{
+    text-decoration: none;
+    color: inherit;
+}
+.title2 a:hover{
+    color:rgba(0, 255, 255, 0.925);
+}
+.title2 a:visited{
+    color: rgba(0, 255, 255, 0.279);
+}
+strong{
+    width: fit-content;
+    color:white
+}
+.title{
+    font-weight: bold;
+    font-size: 4.5cap;
+}

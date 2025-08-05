@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Google</title>
+  
+    
+    <!-- FAVICON -->
+    <link rel="shortcut icon" type="image/png" href="./assets/faviconunirio.png" />
+
+    <!-- CSS STYLE LINK -->
+    <link rel="stylesheet" href="./assets/global.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="header">
+        <div class="left-header">
+          <img src="./assets/images/UNIRIO.png"  alt="Logo da unirio" srcset="" class="logo"><a href="/search"></a></img>
+        <div class="search">
+            <div id="search__content">
+  
+              <div class="bar">
+                <!-- Icon search -->
+                <svg class="icon-search" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+            
+                <input type="text" name="search" value="<%=busca.q%>"  id="searchbar-query" onfocus="handleFocusInput()" onblur="handleBlurInput()" onkeydown="handleKeydown(event)"/>
+                             
+                <button type="button"  title="Search by voice">
+                  <!-- Icon mic -->
+                  <svg class="icon-mic" class="goxjub" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#4285f4" d="m12 15c1.66 0 3-1.31 3-2.97v-7.02c0-1.66-1.34-3.01-3-3.01s-3 1.34-3 3.01v7.02c0 1.66 1.34 2.97 3 2.97z"></path><path fill="#34a853" d="m11 18.08h2v3.92h-2z"></path><path fill="#fbbc05" d="m7.05 16.87c-1.27-1.33-2.05-2.83-2.05-4.87h2c0 1.45 0.56 2.42 1.47 3.38v0.32l-1.15 1.18z"></path><path fill="#ea4335" d="m12 16.93a4.97 5.25 0 0 1 -3.54 -1.55l-1.41 1.49c1.26 1.34 3.02 2.13 4.95 2.13 3.87 0 6.99-2.92 6.99-7h-1.99c0 2.92-2.24 4.93-5 4.93z"></path></svg>
+                </button>
+              </div>
+  
+              <ul id="history">
+                <li>
+         
+              
+                </li>
+                
+              </ul>
+  
+            </div>
+  
+          </div>
+  
+      
+        </div>
+
+        <div class="right-header">
+          <button type="button" onclick="handleVisibleMenuApp()">
+            <!-- Icon app -->
+            <svg class="gb_Te" focusable="false" viewBox="0 0 24 24"><path d="M6,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM16,6c0,1.1 0.9,2 2,2s2,-0.9 2,-2 -0.9,-2 -2,-2 -2,0.9 -2,2zM12,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2z"></path></svg>
+          </button>
+          
+            <div class="botoes1">
+              <% if(usuario){ %>
+                <button type="button" class="btn" onclick="enviarDados('<%=usuario.id %>')"><img class="icones" src="./assets/images/play.png" srcset=""></button>
+                <button type="button" class="btn" onclick="apagar()">Excluir dkg</button>
+                <% }else{ %>
+                  <button type="button" class="btn" onclick="enviarDados('3')"><img class="icones" src="./assets/images/play.png" srcset=""></button>
+                  <button type="button" class="btn" onclick="apagar()">Excluir dkg</button>
+                  <% } %>      
+            </div>
+
+          <% if(usuario){ %>
+            <div class="header__avatar">
+              <button onclick="handleVisibleMenuUser()" type="button">
+                <img 
+                src="./assets/images/image.png"
+                alt="Avatar"
+                />
+            </button>
+            </div>
+            
+            <div class="user__menu" id="user__menu">
+              <div class="header">   
+                  
+                    <span><%=usuario.email%></span>            
+                  
+       
+                  
+              </div>
+              <div class="upper">
+                <a class="app_item_header" href="">
+                  <img src="./assets/images/faviconunirio.png" alt="">
+              
+                    <span class="usuario-name">Olá <%=usuario.nome %>!</span>
+                  
+                </a>
+              </div>
+      
+              <a class="app_item" href="">
+    
+                <strong>Configurações</strong>
+              </a>
+              <a class="app_item" href="">
+    
+                <strong>Minha conta</strong>
+              </a>
+              <a class="app_item" href="/logout">
+     
+                <strong>sair</strong>
+              </a>
+            </div>
+            <% } else{%>
+              <a href="/login"><button class="login">Log in</button></a>
+              <% } %>
+  
+          <div id="menu__app">
+            <div class="app__group">
+              <a class="app_item" href="">
+                <img src="./assets/images/faviconunirio.png" alt="">
+                <strong>Busca</strong>
+              </a>
+              <a class="app_item" href="">
+                <img src="./assets/images/menu-app/youtube.png" alt="">
+                <strong>Youtube</strong>
+              </a>
+              <a class="app_item" href="">
+                <img src="./assets/images/menu-app/maps.png" alt="">
+                <strong>Maps</strong>
+              </a>
+              <a class="app_item" href="">
+                <img src="./assets/images/menu-app/books.png" alt="">
+                <strong>Books</strong>
+              </a>
+              <a class="app_item" href="">
+                <img src="./assets/images/menu-app/gmail.png" alt="">
+                <strong>Gmail</strong>
+              </a>
+            </div>          
+        </div>
+
+      </header>
+      <hr>     
+      <div class="inforesults">
+        <p>Sobre <%=search_info.total_results %> resultados (em <%=search_info.time_taken_displayed %> segundos) </p>
+        <p>  </p>
+      </div>
+      <div id="__result-app">
+        <% if (answer_box) { %>
+          <div class="infobox1">
+            <section class="info">
+
+              <div class="site">
+                <p><span class="highlight"><%= answer_box.snippet %></span></p>
+                <div class="site_answerbox">
+                  <img src="<%-answer_box.favicon%>" class="favicon">
+                  <span class="source"><%- answer_box.displayed_link %></span><br>
+                  <a href="<%-answer_box.link%>"  class="title"><%- answer_box.title%></a>
+                </div>
+                
+              </div>    
+              <div class="imagesa">
+                <div class="image-container">
+                  <% if (Array.isArray(answer_box.images) && answer_box.images.length > 0) { %>
+                  <% answer_box.images.forEach(function(item) { %>
+                    <img src="<%= item %>" alt="Imagem de Química">
+                  <% }) %>
+      
+              <% } %>
+              </div>
+              </div>
+        
+
+            </section>
+          </div>
+          
+        <% } %>
+        <div class="global">
+          <div class="left">
+            <div class="resultado-busca">
+              <% if (Array.isArray(param) && param.length > 0) { %>
+            
+                <% if (param[0]) { %>
+                  <div class="conjunto">
+                    <div class="search-item" id="search-item-0">
+                      <div class="search-header">        
+                        <div class="source_title">
+                          <% if(!param[0].favicon){ %>
+                          <div class="icon-title"><img  class="iconfav" src="assets/images/Page-1.svg" width="20px" height="20px" alt=""></div>
+                          <% }else{ %>
+                          <img src="<%- param[0].favicon %>" class="favicon">
+                          <% } %>
+                          <p><%= param[0].source %></p>
+                        </div>
+                        <span class="source"><%- param[0].link %></span>  
+                        <a href="<%- param[0].link %>" data-index="1" class="title"><%- param[0].title %></a>
+                      </div>
+                      <div class="description">
+                        <p><%- param[0].snippet %></p>
+
+                      </div>
+                    </div>
+                    <div class="imagems">
+                      <% if(param[0].thumbnail){ %>
+                      <img src="<%= param[0].thumbnail %>" alt="">
+                      <% } %>
+                    </div>
+
+                  </div>
+                  
+                <% } %>
+                <% if (related_searches){ %>
+                  <p>Pessoas também perguntam</p>
+                  <% if (Array.isArray(related_searches)) { %>
+                      <% related_searches.forEach(function(questoes, index) { %>
+                        <% if(questoes.snippet){ %>
+                          
+                          <div class="toggle-btn" id="box-<%=index %>" onclick="toggleInfo('<%= index %>')">
+                            <%= questoes.question %>
+                            <img src="assets/images/desce.png" alt="" srcset="">
+                          </div>
+                          <div class="info-box" id="infoBox-<%= index %>">
+                              <%= questoes.snippet %>   
+                              <div class="conjunto">
+                                <div class="search-item" id="search-item-3">
+                                  <div class="search-header">        
+                                    <div class="source_title">
+                                      <% if(!questoes.favicon){ %>
+                                      <div class="icon-title"><img  class="iconfav" src="assets/images/Page-1.svg" width="20px" height="20px" alt=""></div>
+                                      <% }else{ %>
+                                      <img src="<%- questoes.favicon %>" class="favicon">
+                                      <% } %>
+                                      <p><%= questoes.source %></p>
+                                    </div>
+                                    <span class="source"><%- questoes.displayed_link %></span>  
+                                    <a href="<%- questoes.link %>" data-index="4" class="title"><%- questoes.title %></a>
+                                  </div>
+                                 
+                                </div>
+                                <div class="imagems">
+                                  <% if(questoes.thumbnail){ %>
+                                  <img src="<%= questoes.thumbnail %>" alt="">
+                                  <% } %>
+                                </div>
+                              </div>
+                              
+                            </div>
+                       
+                          <% } %>
+                      <% }) %>
+                  <% } %>
+                <% if (param[1]) { %>
+                  <div class="conjunto">
+                    <div class="search-item" id="search-item-1">
+                      <div class="search-header">        
+                        <div class="source_title">
+                          <% if(!param[1].favicon){ %>
+                          <div class="icon-title"><img  class="iconfav" src="assets/images/Page-1.svg" width="20px" height="20px" alt=""></div>
+                          <% }else{ %>
+                          <img src="<%- param[1].favicon %>" class="favicon">
+                          <% } %>
+                          <p><%= param[1].source %></p>
+                        </div>
+                        <span class="source"><%- param[1].link %></span>  
+                        <a href="<%- param[1].link %>" data-index="2" class="title"><%- param[1].title %></a>
+                      </div>
+                      <div class="description">
+                        <p><%- param[1].snippet %></p>
+                     
+                      </div>
+                    </div>
+                    <div class="imagems">
+                      <% if(param[1].thumbnail){ %>
+                      <img src="<%= param[1].thumbnail %>" alt="">
+                      <% } %>
+                    </div>
+                  </div>
+                  
+                <% } %>
+            
+                <% if (param[2]) { %>
+                  <div class="conjunto">
+                    <div class="search-item" id="search-item-2">
+                      <div class="search-header">        
+                        <div class="source_title">
+                          <% if(!param[2].favicon){ %>
+                          <div class="icon-title"><img  class="iconfav" src="assets/images/Page-1.svg" width="20px" height="20px" alt=""></div>
+                          <% }else{ %>
+                            <div class="icon-title2"> <img class="iconfav" src="<%- param[2].favicon %>" class="favicon"></div>
+                         
+                          <% } %>
+                          <p><%= param[2].source %></p>
+                        </div>
+                        <span class="source"><%- param[2].link %></span>  
+                        <a href="<%- param[2].link %>" data-index="3" class="title"><%- param[2].title %></a>
+                      </div>
+                      <div class="description">
+                        <p><%- param[2].snippet %></p>
+
+                      </div>
+                    </div>
+                    <div class="imagems">
+                      <% if(param[2].thumbnail){ %>
+                      <img src="<%= param[2].thumbnail %>" alt="">
+                      <% } %>
+                    </div>
+                  </div>
+                  
+                <% } %>
+            
+                <% if (param[3]) { %>
+                  <div class="conjunto">
+                    <div class="search-item" id="search-item-3">
+                      <div class="search-header">        
+                        <div class="source_title">
+                          <% if(!param[3].favicon){ %>
+                          <div class="icon-title"><img  class="iconfav" src="assets/images/Page-1.svg" width="20px" height="20px" alt=""></div>
+                          <% }else{ %>
+                          <img src="<%- param[3].favicon %>" class="favicon">
+                          <% } %>
+                          <p><%= param[3].source %></p>
+                        </div>
+                        <span class="source"><%- param[3].link %></span>  
+                        <a href="<%- param[3].link %>" data-index="4" class="title"><%- param[3].title %></a>
+                      </div>
+                      <div class="description">
+                        <p><%- param[3].snippet %></p>
+              
+                      </div>
+                     
+                    </div>
+                    <div class="imagems">
+                      <% if(param[3].thumbnail){ %>
+                      <img src="<%= param[3].thumbnail %>" alt="">
+                      <% } %>
+                    </div>
+                  </div>
+                  
+
+                <% } %>
+            
+                <% if (param[4]) { %>
+                  <div class="conjunto">
+                    <div class="search-item" id="search-item-4">
+                      <div class="search-header">        
+                        <div class="source_title">
+                          <% if(!param[4].favicon){ %>
+                          <div class="icon-title"><img  class="iconfav" src="assets/images/Page-1.svg" width="20px" height="20px" alt=""></div>
+                          <% }else{ %>
+                          <img src="<%- param[4].favicon %>" class="favicon">
+                          <% } %>
+                          <p><%= param[4].source %></p>
+                        </div>
+                        <span class="source"><%- param[4].link %></span>  
+                        <a href="<%- param[4].link %>" data-index="5" class="title"><%- param[4].title %></a>
+                      </div>
+                      <div class="description">
+                        <p><%- param[4].snippet %></p>
+
+                      </div>
+                    </div>
+                    <div class="imagems">
+                      <% if(param[4].thumbnail){ %>
+                      <img src="<%= param[4].thumbnail %>" alt="">
+                      <% } %>
+                    </div>
+
+                  </div>
+                  
+                <% } %>
+                <% if (param[5]) { %>
+                  <div class="conjunto">
+                    <div class="search-item" id="search-item-5">
+                      <div class="search-header">        
+                        <div class="source_title">
+                          <% if(!param[5].favicon){ %>
+                          <div class="icon-title"><img  class="iconfav" src="assets/images/Page-1.svg" width="20px" height="20px" alt=""></div>
+                          <% }else{ %>
+                          <img src="<%- param[5].favicon %>" class="favicon">
+                          <% } %>
+                          <p><%= param[5].source %></p>
+                        </div>
+                        <span class="source"><%- param[5].link %></span>  
+                        <a href="<%- param[5].link %>" data-index="6" class="title"><%- param[5].title %></a>
+                      </div>
+                      <div class="description">
+                        <p><%- param[5].snippet %></p>
+
+                      </div>
+                    </div>
+                    <div class="imagems">
+                      <% if(param[5].thumbnail){ %>
+                      <img src="<%= param[5].thumbnail %>" alt="">
+                      <% } %>
+                    </div>
+
+                  </div>
+                  
+                <% } %>
+
+                <% if (param[6]) { %>
+                  <div class="conjunto">
+                    <div class="search-item" id="search-item-6">
+                      <div class="search-header">        
+                        <div class="source_title">
+                          <% if(!param[6].favicon){ %>
+                          <div class="icon-title"><img  class="iconfav" src="assets/images/Page-1.svg" width="20px" height="20px" alt=""></div>
+                          <% }else{ %>
+                          <img src="<%- param[6].favicon %>" class="favicon">
+                          <% } %>
+                          <p><%= param[6].source %></p>
+                        </div>
+                        <span class="source"><%- param[6].link %></span>  
+                        <a href="<%- param[6].link %>" data-index="7" class="title"><%- param[6].title %></a>
+                      </div>
+                      <div class="description">
+                        <p><%- param[6].snippet %></p>
+
+                      </div>
+                    </div>
+                    <div class="imagems">
+                      <% if(param[6].thumbnail){ %>
+                      <img src="<%= param[6].thumbnail %>" alt="">
+                      <% } %>
+                    </div>
+
+                  </div>
+                  
+                <% } %>
+            
+                <% if (param[7]) { %>
+                  <div class="conjunto">
+                    <div class="search-item" id="search-item-7">
+                      <div class="search-header">        
+                        <div class="source_title">
+                          <% if(!param[7].favicon){ %>
+                          <div class="icon-title"><img  class="iconfav" src="assets/images/Page-1.svg" width="20px" height="20px" alt=""></div>
+                          <% }else{ %>
+                          <img src="<%- param[7].favicon %>" class="favicon">
+                          <% } %>
+                          <p><%= param[7].source %></p>
+                        </div>
+                        <span class="source"><%- param[7].link %></span>  
+                        <a href="<%- param[7].link %>" data-index="8" class="title"><%- param[7].title %></a>
+                      </div>
+                      <div class="description">
+                        <p><%- param[7].snippet %></p>
+
+                      </div>
+                    </div>
+                    <div class="imagems">
+                      <% if(param[7].thumbnail){ %>
+                      <img src="<%= param[7].thumbnail %>" alt="">
+                      <% } %>
+                    </div>
+
+                  </div>
+                  
+                <% } %>
+            
+                <% if (param[8]) { %>
+                  <div class="conjunto">
+
+                    <div class="search-item" id="search-item-8">
+                      <div class="search-header">        
+                        <div class="source_title">
+                          <% if(!param[8].favicon){ %>
+                          <div class="icon-title"><img  class="iconfav" src="assets/images/Page-1.svg" width="20px" height="20px" alt=""></div>
+                          <% }else{ %>
+                          <img src="<%- param[8].favicon %>" class="favicon">
+                          <% } %>
+                          <p><%= param[8].source %></p>
+                        </div>
+                        <span class="source"><%- param[8].link %></span>  
+                        <a href="<%- param[8].link %>" data-index="9" class="title"><%- param[8].title %></a>
+                      </div>
+                      <div class="description">
+                        <p><%- param[8].snippet %> </p>
+
+                      </div>
+                    </div>
+                    <div class="imagems">
+                      <% if(param[8].thumbnail){ %>
+                      <img src="<%= param[8].thumbnail %>" alt="">
+                      <% } %>
+                    </div>
+                  </div>
+                  
+                <% } %>
+            
+                <% if (param[9]) { %>
+                  <div class="conjunto">
+                    <div class="search-item" id="search-item-9">
+                      <div class="search-header">        
+                        <div class="source_title">
+                          <% if(!param[9].favicon){ %>
+                          <div class="icon-title"><img  class="iconfav" src="assets/images/Page-1.svg" width="20px" height="20px" alt=""></div>
+                          <% }else{ %>
+                          <img src="<%- param[9].favicon %>" class="favicon">
+                          <% } %>
+                          <p><%= param[9].source %></p>
+                        </div>
+                        <span class="source"><%- param[9].link %></span>  
+                        <a href="<%- param[9].link %>" data-index="10" class="title"><%- param[9].title %></a>
+                      </div>
+                      <div class="description">
+                        <p><%- param[9].snippet %> <%= param[9].position %></p>
+                      </div>
+                    </div>
+                    <div class="imagems">
+                      <% if(param[9].thumbnail){ %>
+                      <img src="<%= param[9].thumbnail %>" alt="">
+                      <% } %>
+                    </div>
+                  </div>
+                  
+                <% } %>
+            
+              <% } %>
+              <% if(Array.isArray(final)){ %>
+                <% if(final){ %>
+                  <div class="links">
+                    <div class="div1">
+                      <%if(final[1]){%>
+                      
+                      <div class="link">
+                        <%=final[1].query%>
+                      </div>
+                      <%}  %> 
+                      
+                      <%if(final[2]){%>
+                        
+                      <div class="link">
+                          <%=final[2].query%>
+                      </div>
+                      <%}%>
+                      
+                      <%if(final[3]){%>
+        
+                      <div class="link">
+                          <%=final[3].query%>
+                       
+                      </div>
+                      <%}%>
+                      <%if(final[4]){%>
+                      <div class="link">
+                          <%=final[4].query%>
+                      </div>
+                      <%}%> 
+                    </div>
+                    <div class="div2">
+                      <%if(final[5]){%>
+                      <div class="link">
+                          <%=final[5].query%>
+                      </div>
+                      <%}%>
+                      <%if(final[6]){%>
+                      <div class="link">
+                          <%=final[6].query%>
+                      </div>
+                      <%}%>
+                      
+                      <%if(final[7]){%>
+                      <div class="link">
+                          <%=final[7].query%>
+                        
+                      </div>
+                      <%}%>
+                      <%if(final[8]){%>
+                        
+                      <div class="link">
+                          <a href="https://www.youtube.com/"><%=final[8].query%></a>
+                      </div>
+                      <%}%> 
+                    </div>
+                  <% } %>
+                  </div>  
+              <% } %>
+              
+
+              <div class="paginacao">
+
+              </div>
+            </div>
+            <% } %>
+          </div>
+          <div class="right">
+            <%if(graph){%>
+            <div class="graph">
+                <div class="graph-header">
+                  <div class="title-graph"><p><%=graph.title%></p></div>
+                  <div class="tipo"><p><%=graph.type%></p></div>
+                </div>
+                <% if(graph.source) {%>
+                <div class="graph-description"><p><%=graph.description%><a href='<%graph.source.link%>'><%=graph.source.name%></a></p></div>
+                <% } %>
+                <% if(graph.web_results){ %>
+                  <%=graph.web_results[0].snippet%>  
+                <%} %>
+                <div class="space"></div>
+                <% if(Array.isArray(graph.itens_também_pesquisados)){%>
+                <div class="perguntas">
+                  <p>Outras pessoas também pesquisaram</p>
+                  <br>
+                  <div class="itens-perguntas">
+                    <% graph.itens_também_pesquisados.forEach(function(i){ %>
+                      <div class="itens-pesquisa">
+                        <img class="itens-pesquisa-img" src='<%=i.image%>' href='http://localhost:3000/search?q=<%=i.name%>' alt="" srcset="">
+                        <a href='http://localhost:3000/search?q=<%=i.name%>'><%=i.name%></a>
+                      </div>
+                      <% }) %>
+                  </div>
+                  <%} %>
+                  <div class="space-2"></div>
+                </div>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div >
+    
+    
+ 
+</div>
+  <div class="footer-results">
+    
+  </div>
+<script src="./scripts/view_index.js"></script>
+<script src="./scripts/calculatingMetric.js" ></script>
+<script>
+function toggleInfo(index) {
+    var infoBox = document.getElementById(`infoBox-${index}`);
+    var box = document.getElementById(`box-${index}`)
+    var img = box.querySelector("img") 
+    
+    if (infoBox.style.display === "none" || infoBox.style.display === "") {
+        infoBox.style.display = "block";
+        img.src = "assets/images/sobe.png"
+    } else {
+        infoBox.style.display = "none";
+        img.src = "assets/images/desce.png"
+    }
+}
+function apagar(){
+  localStorage.removeItem('metric-data');
+  localStorage.removeItem('clone-google-history');
+  localStorage.clear();
+
+}
+</script>
+
+</body>

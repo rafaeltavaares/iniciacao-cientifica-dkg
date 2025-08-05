@@ -1,0 +1,267 @@
+.header {
+  display: flex;
+  align-items: center;
+  height: 15vh;
+  column-gap: 12px;
+  /* background-color: red; */
+  padding: 8px 20px;
+  z-index: 2;
+  position: relative;
+  justify-content: end;
+}
+.header .search{
+  margin-right: 140px;
+}
+.header .logo{
+  width: 80px;
+  height:20px ;
+}
+.search{
+
+  /* background-color: bisque; */
+}
+.left-header{
+  /* border: 1px solid green; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+}
+.left-header img{
+  margin-right: 2%;
+}
+.right-header{
+  display: flex;
+  justify-content: right;
+  width: 100%;
+  /* border: 1px solid rebeccapurple; */
+}
+@media (max-height: 650px) {
+  .search {
+    height: calc(100vh - 40px);
+  }
+  
+  #search__content {
+    height: calc(100vh - 40px);
+  }
+}
+
+
+.header ul {
+  list-style: none;
+
+  display: flex;
+  column-gap: 15px;
+  margin-right: 4px;
+}
+
+.header li a {
+  color: var(--secondary);
+  font-size: 13px;
+  line-height: 24px;
+}
+
+.header button {
+  display: flex;
+  
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background 0.2s;
+}
+
+.header button:hover {
+  background: rgba(60, 64, 67, 0.08);
+}
+
+.header button svg {
+  width: 24px;
+  height: 24px;
+  margin: auto;
+}
+
+.header button svg path {
+  fill: #5f6368;
+}
+
+.header__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+
+}
+
+.header__avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+#menu__app {
+  position: absolute;
+  top: 56px;
+  right: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  row-gap: 12px;
+
+  opacity: 0;
+  visibility: hidden;
+
+  padding-top: 10px;
+
+  background: #fff;
+  width: 310px;
+  height: 448px;
+  overflow-y: scroll;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,.2);
+  box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 30%), 0px 2px 6px 2px rgb(60 64 67 / 15%);
+}
+.user__menu{
+  position: absolute;
+  top: 56px;
+  right: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  row-gap: 5px;
+
+  opacity: 0;
+  visibility: hidden;
+
+  padding-top: 10px;
+
+  background: #eef2f9b7;
+  width: 250px;
+  height: 348px;
+
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,.2);
+  box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 30%), 0px 2px 6px 2px rgb(60 64 67 / 15%);
+}
+
+.app_item_header .usuario-name{
+  text-decoration: none;
+  font-size: large;
+  letter-spacing: 1px;
+  font-weight: 500;
+  color: black;
+}
+.user__menu  .header{
+  width: 100%;
+  height: 20px;
+  justify-content: center;
+
+  display: flex;
+  
+}
+.user__menu  span{
+  font-size: small;
+  color: rgba(0, 0, 0, 0.77);
+  font-weight: lighter;
+  letter-spacing: 0.1ch;
+  font-family: Arial, Helvetica, sans-serif;
+
+}
+.user__menu .upper{
+  display: flex;
+  align-items: start;
+  position: relative;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  top: -15px;
+
+  border-bottom:1px solid #5f6368a5 ;
+  width: 100%;
+  height: 40%;
+
+}
+.user__menu .upper a{
+  text-decoration: none;
+}
+
+#user__menu.active{
+  opacity: 1;
+  visibility: visible;
+}
+#menu__app.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+#menu__app hr {
+  border: 0;
+  border-top: 1px solid #e8eaed;
+}
+
+.app__group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  padding-left: 20px;
+
+}
+.app_item_header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: all 0.2s;
+}
+.app_item_header img{
+  width: 60px;
+  object-fit: cover;
+
+  border-radius: 50%;
+  height: 60px;
+}
+.app_item {
+  display: flex;
+  flex-direction: column; 
+  padding: 10px;
+  transition: all 0.2s;
+}
+
+.app_item:hover {
+  text-decoration: none;
+  background: #e8f0fe;
+  border-radius: 8px;
+}
+
+.app_item img {
+  width: 40px;
+  height: auto;
+}
+
+.app_item strong {
+  font-weight: lighter;
+  font-size: 14px;
+  line-height: 18px;
+  color: #202124;
+  letter-spacing: 0.09px;
+}
+
+#menu__app::-webkit-scrollbar {
+  width: 16px;
+}
+
+#menu__app::-webkit-scrollbar-thumb {
+  background: #dadce0;
+  background-clip: padding-box;
+  border: 4px solid transparent;
+  border-radius: 8px;
+  box-shadow: none;
+  min-height: 50px;
+}
+
+#menu__app::-webkit-scrollbar-track, #menu__app::-webkit-scrollbar-track:hover {
+  background: none;
+  border: none;
+}

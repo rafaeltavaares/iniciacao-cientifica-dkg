@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/login.css">
+    <title>Google Login Form</title>
+</head>
+<body>
+    <div class="box">
+        <div id="logo" class="google-logo" title="Google"><img src="./assets/images/UNIRIO1.png" width="170px" height="100px" alt="" srcset=""></div>
+        <h2>Sign-up</h2>
+        
+        <form method="post" action="/register" >
+          <div class="inputBox">
+              <input type="text" name="nome" required value="">
+              <label>Nome</label>
+              <% if(erros){ %>
+              <div class="error"><% if(erros.erro_nome_curto){ %> Nome curto demais! <% } %></div>
+              <% } %>
+          </div>
+          
+          <div class="inputBox">
+              <input type="email" name="email" required value="">
+              <label>E-mail</label>
+              <% if(erros){ %>
+              <div class="error"><% if(erros.erro_nome_curto){ %>Email inválido <% } %></div>
+              <div class="error"><% if(erros.erro_validar_email){ %>Email já cadastrado<% } %></div>
+              <% } %>
+          </div>
+      
+          <div class="inputBox">
+              <input type="password" name="senha" required value="">
+              <label>Senha</label>
+              <% if(erros){ %>
+              <div class="error"><% if(erros.erro_senha_curta){ %>A senha precisa ter pelo menos 6 caracteres<% } %></div>
+              <div class="error"><% if(erros.erro_senha_curta){ %>As senhas não coincidem<% } %></div>
+              <% } %>
+          </div>
+      
+          <div class="inputBox">
+              <input type="password" name="confirma_senha" required  value="">
+              <label>Confirme a senha</label>
+              <% if(erros){ %>
+              <div class="error"><% if(erros.erro_senha_curta){ %>A senha precisa ter pelo menos 6 caracteres<% } %></div>
+              <div class="error"><% if(erros.erro_senha_curta){ %>As senhas não coincidem<% } %></div>
+              <% } %>
+          </div>  
+          
+          <div class="sign-up">
+              <a href="/login"> <button type="button">Sing-in</button></a>
+              <input type="submit" name="sign-in" value="Entrar">
+          </div>
+      
+          
+      </form>
+      </div>
+
+
+      <script>
+        
+        let btn = document.getElementById("esqueceu");
+        btn.addEventListener("click", () =>{
+            window.alert("Entre em contato com a universidade.")
+        })
+
+        document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll("input").forEach(input => {
+            let savedValue = localStorage.getItem(input.name);
+            if (savedValue) {
+                input.value = savedValue;
+                input.setAttribute('value', savedValue); // Atualiza a propriedade 'value' para refletir corretamente no HTML
+            }
+        });
+    });
+
+    function saveValue(input) {
+        localStorage.setItem(input.name, input.value);
+    }
+
+    function clearStorage() {
+        localStorage.removeItem("nome");
+        localStorage.removeItem("email");
+        localStorage.removeItem("senha");
+        localStorage.removeItem("confirma_senha");
+    }
+      </script>
+</body>
+</html>

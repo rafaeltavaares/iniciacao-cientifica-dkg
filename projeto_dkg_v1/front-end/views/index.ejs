@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="./scripts/3d.js"></script>
+    <link rel="stylesheet" href="./assets/style.css">
+    <title>dkg</title>
+</head>
+<body>
+    <div class="content">
+        <div class="nav" >
+            <div class="esquerda">
+                <img src="./assets/images/UNI.png" alt="" srcset="">
+            </div>
+            <div class="direita">
+                <% if(!token){ %>
+
+                    <a href="/login"><button class="login">Log in</button></a>
+                    <a href="/register"><button class="registrar">Sign up</button></a>
+                
+                <% } else{ %>
+                    TESTE
+                <%} %>
+                
+            </div>
+        </div>
+        <div class="hero " id="main-content">
+            <div class="hero-content">
+                <span class="title">Degree of Knowledge gain</span>
+                <span class="title2">Search tool developed by unirio's students to analyse your learning</span>
+                <span class="title2"> for academic and research purposes. Learn more<span class="link"><a href="/sobre"> here </a></span></span>    
+                <div class="btn">
+                    <button class="hero-btn" id="start-session-btn" value="true">Start learning session</button>
+          
+                </div>
+            </div>
+        </div>
+        <div class="blankspace"></div>
+        <div class="sobre" id="sobre">
+            <div class="conteudo">
+                <div class="texto">
+                    <div class="titlo">
+                        <h1>About us</h1> 
+                    </div>
+                    This scientific initiation project is based on the knowledge gain metric developed by Professor Marcelo Tibau. The metric is applied during the user's search session, allowing for continuous evaluation and optimization of its effectiveness. Developed as part of an academic research project at the Federal University of the State of Rio de Janeiro (UNIRIO), this project aims to refine and expand the metric, contributing to its continuous improvement.</div>
+
+                </div>
+            </div>
+            <div class="busca_sec" id="busca_sec">
+                <div class="conteudo_busca">
+                    <h4>How the search works</h4>
+                    <div class="texto_busca">
+         
+                 
+                       <p> Well, Our search engine is Google, which we use as the foundation for implementing our metric. To achieve this, we capture search data, including the clicked link, its position, and the query used (the search term). With this information, we can track your learning process and, at the end of the search session, calculate the result, which typically ranges from 0 to 1. If you are interested in learning more about the metric, we recommend reading Professor Marcelo Tibau's doctoral thesis.</p>
+                        <button>teste</button>
+                    </div>
+           
+                </div>
+                <img src="/assets/images/search.png">
+            </div>
+            <div class="privacidade" id="privacidade">
+                <div class="conteudo_privacidade">
+                    <div class="texto">
+                        <strong>Privacidade e Proteção de Dados</strong>
+                        <p>
+                            
+    
+    Valorizamos a sua privacidade e garantimos que seus dados são tratados com total segurança e sigilo. As informações coletadas em nosso site são utilizadas apenas para melhorar a sua experiência, sendo protegidas conforme as normas de privacidade. Não compartilhamos seus dados com terceiros sem sua autorização.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</body>
+</html>
