@@ -32,7 +32,7 @@
       ```
 
   4. **Acesse a documentação da API**  
-  - Backend [API](https://github.com/rafaeltavaares/projeto_dkg_v1/api/demo)
+  - Backend ([https://github.com/rafaeltavaares/projeto_dkg_v1/api/demo](https://github.com/rafaeltavaares/iniciacao-cientifica-dkg/tree/master/projeto_dkg_v1/api/demo))
   ## 📄 Licença
 
   Este projeto está sob a licença MIT.
