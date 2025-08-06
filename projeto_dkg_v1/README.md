@@ -20,8 +20,8 @@
   0. **Importante ter o node instalado**
   1. **Clone o repositório:**
     ```bash
-    git clone https://github.com/rafaeltavaares/seu-repositorio.git
-    cd seu-repositorio
+    git clone [https://github.com/rafaeltavaares/iniciacao-cientifica-dkg.git](https://github.com/rafaeltavaares/iniciacao-cientifica-dkg.git)
+    cd iniciacao-cientifica-dkg
     ```
 
   3. **Execute o projeto - Front-end:**
@@ -31,11 +31,8 @@
        npm start
       ```
 
-
-  ---
-
-  
-
+  4. **Acesse a documentação da API**  
+  - Backend [API](https://github.com/rafaeltavaares/projeto_dkg_v1/api/demo)
   ## 📄 Licença
 
   Este projeto está sob a licença MIT.
