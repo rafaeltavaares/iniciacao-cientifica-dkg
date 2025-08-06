@@ -17,7 +17,7 @@
 
   1. **Clone o repositório:**
     ```bash
-    git clone https://github.com/seu-usuario/seu-repositorio.git
+    git clone https://github.com/rafaeltavaares/iniciacao-cientifica-dkg.git
     cd seu-repositorio
     ```
 
@@ -99,7 +99,3 @@
   Este projeto está sob a licença MIT.
 
   ---
-
-  ## ✉️ Contato
-
-  Para dúvidas ou sugestões, entre em contato com [seu-email@exemplo.com].
